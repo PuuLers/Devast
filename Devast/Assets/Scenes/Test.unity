@@ -232,7 +232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: -0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -248,12 +248,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f744c5c02192dc449bf46d824982619, type: 3}
+  m_Script: {fileID: 11500000, guid: ea19fd3909571a54a86e98790726b49e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 1577145163}
-  playerTag: 
-  movingSpeed: 2
+  player: {fileID: 1577145163}
+  cameraSpeed: 20
+  mouseOffsetAmount: 1
+  maxDistanceFromPlayer: 2
 --- !u!1 &885639722
 GameObject:
   m_ObjectHideFlags: 0
