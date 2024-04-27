@@ -3,36 +3,45 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour
 {
     public Transform player;
-    public float cameraSpeed = 2.0f;
-    public float mouseOffsetAmount = 1.0f;
-    public float maxDistanceFromPlayer = 5.0f; // Максимальное расстояние от игрока
-
+    public float cameraSpeed;
+    public float mouseOffsetAmount;
+    public float cameraFollowZoneWidth;
     private Vector3 offset;
-    private Vector3 targetPosition;
-
     void Start()
     {
         offset = transform.position - player.position;
     }
-
-    void FixedUpdate()
+  void FixedUpdate()
+{
+    if (player != null)
     {
-        if (player != null)
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 targetPosition = player.position + offset;        
+        float deltaX = mousePos.x - player.position.x; // Р Р°Р·РЅРёС†Р° РїРѕ РѕСЃРё x
+        float deltaY = mousePos.y - player.position.y; // Р Р°Р·РЅРёС†Р° РїРѕ РѕСЃРё y       
+        if (Mathf.Abs(deltaX) < cameraFollowZoneWidth / 2 && Mathf.Abs(deltaY) < cameraFollowZoneWidth / 2)
         {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
             targetPosition = player.position + offset;
-
-            Vector3 direction = mousePos - player.position;
+        }
+        else
+        {
+            Vector3 direction = new Vector3(deltaX, deltaY, 0f); // РЈС‡РёС‚С‹РІР°РµРј y-РєРѕРјРїРѕРЅРµРЅС‚Сѓ РІ РЅР°РїСЂР°РІР»РµРЅРёРё
             targetPosition += direction * mouseOffsetAmount;
 
             float distanceToPlayer = Vector3.Distance(targetPosition, player.position);
-            if (distanceToPlayer > maxDistanceFromPlayer)
-            {
-                targetPosition = player.position + (targetPosition - player.position).normalized * maxDistanceFromPlayer;
-            }
 
-            transform.position = Vector3.Lerp(transform.position, targetPosition, cameraSpeed * Time.deltaTime);
+            if (distanceToPlayer < cameraFollowZoneWidth / 2)
+            {
+                targetPosition = player.position + (targetPosition - player.position).normalized * cameraFollowZoneWidth / 2;
+            }
+            else if (distanceToPlayer > cameraFollowZoneWidth)
+            {
+                targetPosition = player.position + (targetPosition - player.position).normalized * cameraFollowZoneWidth;
+            }
         }
+        transform.position = Vector3.Lerp(transform.position, targetPosition, cameraSpeed * Time.deltaTime);
     }
+}
+
+    
 }
