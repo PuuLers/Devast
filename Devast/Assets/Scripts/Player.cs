@@ -11,8 +11,8 @@ public class Player : MonoBehaviour
     public float radiation = 0;
     public float experience = 0;
 
-    private float energyDecreaseRate = 5.0f;
-    private float energyRestoreRate = 0.5f;
+    public float energyDecreaseRate = 10f;
+    public float energyRestoreRate = 10f;
 
     private Vector3 direction;
     private Rigidbody2D body;
@@ -35,9 +35,7 @@ public class Player : MonoBehaviour
         Debug.Log(energy);
         RadiuscalCulating();
         Move();
-
     }
-
 
     private void RadiuscalCulating()
     {
@@ -56,6 +54,7 @@ public class Player : MonoBehaviour
     {
         body.AddForce(direction * body.mass * speed * acceleration);
     }
+
     void LookAtCursor()
     {
         Vector3 lookPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
@@ -69,6 +68,7 @@ public class Player : MonoBehaviour
         Run();
         direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         LookAtCursor();
+
         if (Input.GetButtonDown("Run"))
         {
             isRunning = true;
@@ -80,21 +80,29 @@ public class Player : MonoBehaviour
             energy += energyRestoreRate * Time.deltaTime;
         }
 
+        // Ограничение количества энергии от 0 до 100
+        energy = Mathf.Clamp(energy, 0f, 100f);
     }
-
 
     public void Run()
     {
         if (energy > 0 && isRunning)
         {
-            speed = 3f;
+            speed = 2f;
             energy -= energyDecreaseRate * Time.deltaTime;
         }
-        else if (energy < 0 && !isRunning)
+        else
         {
             speed = 1.5f;
             energy += energyRestoreRate * Time.deltaTime;
         }
-    }
 
+        if (energy <= 0)
+        {
+            isRunning = false;
+        }
+
+        // Ограничение количества энергии от 0 до 100
+        energy = Mathf.Clamp(energy, 0f, 100f);
+    }
 }
