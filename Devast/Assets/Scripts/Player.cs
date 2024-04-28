@@ -5,13 +5,13 @@ public class Player : MonoBehaviour
     public float speed = 1.5f;
     public float acceleration = 100;
 
-    public int health = 100;
-    public int energy = 100;
-    public int hunger = 0;
-    public int radiation = 0;
-    public int experience = 0;
+    public float health = 100;
+    public float energy = 100;
+    public float hunger = 0;
+    public float radiation = 0;
+    public float experience = 0;
 
-    private float energyDecreaseRate = 1.0f;
+    private float energyDecreaseRate = 5.0f;
     private float energyRestoreRate = 0.5f;
 
     private Vector3 direction;
@@ -33,8 +33,14 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         Debug.Log(energy);
-        body.AddForce(direction * body.mass * speed * acceleration);
+        RadiuscalCulating();
+        Move();
 
+    }
+
+
+    private void RadiuscalCulating()
+    {
         if (Mathf.Abs(body.velocity.x) > speed)
         {
             body.velocity = new Vector2(Mathf.Sign(body.velocity.x) * speed, body.velocity.y);
@@ -44,20 +50,12 @@ public class Player : MonoBehaviour
         {
             body.velocity = new Vector2(body.velocity.x, Mathf.Sign(body.velocity.y) * speed);
         }
-
-        //// Уменьшаем энергию со временем
-        //if (energy > 0)
-        //{
-        //    energy -= Mathf.RoundToInt(energyDecreaseRate * Time.deltaTime);
-        //}
-
-        //// Восстанавливаем энергию со временем
-        //if (energy < 100)
-        //{
-        //    energy += Mathf.RoundToInt(energyRestoreRate * Time.deltaTime);
-        //}
     }
 
+    private void Move()
+    {
+        body.AddForce(direction * body.mass * speed * acceleration);
+    }
     void LookAtCursor()
     {
         Vector3 lookPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, Camera.main.transform.position.z));
@@ -68,30 +66,34 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        Run();
         direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         LookAtCursor();
         if (Input.GetButtonDown("Run"))
         {
-            Run(true);
+            isRunning = true;
+            energy -= energyDecreaseRate * Time.deltaTime;
         }
         else if (Input.GetButtonUp("Run"))
         {
-            Run(false);
+            isRunning = false;
+            energy += energyRestoreRate * Time.deltaTime;
         }
 
     }
 
-    public void Run(bool Active)
+
+    public void Run()
     {
-        if (energy > 0 && Active)
+        if (energy > 0 && isRunning)
         {
-            speed *= 1.5f; // увеличиваем скорость бега на 1.5 раза
-            energy -= Mathf.RoundToInt(energyDecreaseRate * Time.deltaTime);
+            speed = 3f;
+            energy -= energyDecreaseRate * Time.deltaTime;
         }
-        else
+        else if (energy < 0 && !isRunning)
         {
-            speed /= 1.5f; // если энергии недостаточно для бега, возвращаем базовую скорость
-            energy += Mathf.RoundToInt(energyRestoreRate * Time.deltaTime);
+            speed = 1.5f;
+            energy += energyRestoreRate * Time.deltaTime;
         }
     }
 
