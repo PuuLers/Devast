@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
 
     private Vector3 direction;
     private Rigidbody2D body;
+    private bool isRunning = false;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+        Debug.Log(energy);
         body.AddForce(direction * body.mass * speed * acceleration);
 
         if (Mathf.Abs(body.velocity.x) > speed)
@@ -43,17 +45,17 @@ public class Player : MonoBehaviour
             body.velocity = new Vector2(body.velocity.x, Mathf.Sign(body.velocity.y) * speed);
         }
 
-        // Уменьшаем энергию со временем
-        if (energy > 0)
-        {
-            energy -= Mathf.RoundToInt(energyDecreaseRate * Time.deltaTime);
-        }
+        //// Уменьшаем энергию со временем
+        //if (energy > 0)
+        //{
+        //    energy -= Mathf.RoundToInt(energyDecreaseRate * Time.deltaTime);
+        //}
 
-        // Восстанавливаем энергию со временем
-        if (energy < 100)
-        {
-            energy += Mathf.RoundToInt(energyRestoreRate * Time.deltaTime);
-        }
+        //// Восстанавливаем энергию со временем
+        //if (energy < 100)
+        //{
+        //    energy += Mathf.RoundToInt(energyRestoreRate * Time.deltaTime);
+        //}
     }
 
     void LookAtCursor()
@@ -76,20 +78,20 @@ public class Player : MonoBehaviour
         {
             Run(false);
         }
-       
+
     }
 
     public void Run(bool Active)
     {
         if (energy > 0 && Active)
         {
-        speed *= 1.5f ; // увеличиваем скорость бега на 1.5 раза
-        Debug.Log("Персонаж бежит");
+            speed *= 1.5f; // увеличиваем скорость бега на 1.5 раза
+            energy -= Mathf.RoundToInt(energyDecreaseRate * Time.deltaTime);
         }
         else
         {
-        speed /= 1.5f; // если энергии недостаточно для бега, возвращаем базовую скорость
-        Debug.Log("Персонаж хуй сосет");
+            speed /= 1.5f; // если энергии недостаточно для бега, возвращаем базовую скорость
+            energy += Mathf.RoundToInt(energyRestoreRate * Time.deltaTime);
         }
     }
 

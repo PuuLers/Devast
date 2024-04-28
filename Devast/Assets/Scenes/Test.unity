@@ -254,7 +254,7 @@ MonoBehaviour:
   player: {fileID: 1577145163}
   cameraSpeed: 5
   mouseOffsetAmount: 1
-  cameraFollowZoneWidth: 2.5
+  cameraFollowZoneWidth: 5
 --- !u!1 &885639722
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +457,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 1.5
   acceleration: 100
+  health: 100
+  energy: 100
+  hunger: 0
+  radiation: 0
+  experience: 0
 --- !u!50 &1577145161
 Rigidbody2D:
   serializedVersion: 4
