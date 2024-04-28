@@ -455,13 +455,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51538eff60a36e2408fe866d433cce46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1.5
+  speed: 5
   acceleration: 100
   health: 100
   energy: 100
   hunger: 0
   radiation: 0
   experience: 0
+  energyDecreaseRate: 10
+  energyRestoreRate: 10
 --- !u!50 &1577145161
 Rigidbody2D:
   serializedVersion: 4

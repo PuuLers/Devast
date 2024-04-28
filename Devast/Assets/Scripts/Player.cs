@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         Run();
         direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         LookAtCursor();
-
+    
         if (Input.GetButtonDown("Run"))
         {
             isRunning = true;
@@ -88,7 +88,7 @@ public class Player : MonoBehaviour
     {
         if (energy > 0 && isRunning)
         {
-            speed = 2f;
+            speed = 2.5f;
             energy -= energyDecreaseRate * Time.deltaTime;
         }
         else
