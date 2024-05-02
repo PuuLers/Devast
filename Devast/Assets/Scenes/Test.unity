@@ -253,8 +253,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1577145163}
   cameraSpeed: 5
-  mouseOffsetAmount: 1
-  cameraFollowZoneWidth: 5
+  mouseOffsetAmount: 0.3
+  cameraFollowZoneWidth: 9
 --- !u!1 &885639722
 GameObject:
   m_ObjectHideFlags: 0
